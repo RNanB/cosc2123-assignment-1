@@ -130,8 +130,47 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
         @return True if cell can be updated.  False if cannot, e.g., row or column indices do not exist.
         """
+        
+        if rowIndex >= self.numRows or colIndex >= self.numColumns:
+            return False
 
-        # TO BE IMPLEMENTED
+        # First find index of valA to insert it in
+        replace = False
+        index: int = None
+
+        row = 0
+        sum = 0
+        for i, currVal in enumerate(self.valA):
+            column = self.colA[i]
+            
+            while sum == self.sumA[row + 1]:
+                row += 1
+            
+            # Got to the coordinates, and there is no value there
+            if row > rowIndex or (row == rowIndex and column > colIndex):
+                index = i
+                break
+
+            # Got to the coordinates, but there is already a value there
+            if row == rowIndex and column == colIndex:
+                index = i
+                replace = True
+                break
+            
+            sum += currVal
+        
+        if not replace:
+            self.valA.insert(index, value)
+            self.colA.insert(index, colIndex)
+            for i in range(rowIndex + 1, self.numRows + 1):
+                self.sumA[i] += value
+        else:
+            prevValue = self.valA[index]
+            self.valA[index] = value
+            for i in range(rowIndex + 1, self.numRows + 1):
+                self.sumA[i] += value - prevValue
+ 
+        
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return True
@@ -215,7 +254,8 @@ def main():
     csr.debug()
     print(csr.toList())
     
-    csr.insertCol(1)
+    csr.update(2, 2, 1)
+    # csr.debug()
     print(csr.toList())
 
 if __name__ == '__main__':
