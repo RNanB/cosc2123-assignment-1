@@ -52,6 +52,12 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
 
     def appendRow(self):
+        """
+        Appends an empty row to the spreadsheet.
+
+        @return True if operation was successful, or False if not.
+        """
+
         self.numRows += 1
         self.sumA.append(self.sumA[-1])
 
