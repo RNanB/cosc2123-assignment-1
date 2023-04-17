@@ -229,8 +229,25 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         return a list of cells that have values (i.e., all non None cells).
         """
+        
+        result: list[Cell] = []
 
-        return []
+        row = 0
+        sum = 0
+        for i, currVal in enumerate(self.valA):
+            column = self.colA[i]
+            
+            # If the sum matches, move on to the next row
+            # What about when the row reaches its sum before the end, because of negatives?
+            # Apparently we don't need to cover that case, according to Jeffrey Chan
+            while sum == self.sumA[row + 1]:
+                row += 1
+            
+            result.append(Cell(row, column, currVal))
+            sum += currVal
+
+
+        return result
 
 
     def debug(self) -> None:
@@ -268,7 +285,7 @@ def main():
     csr.debug()
     print(csr.toList())
     
-    print(csr.find(-2))
+    print([str(x) for x in csr.entries()])
 
 if __name__ == '__main__':
     main()
