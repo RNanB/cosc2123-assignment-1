@@ -69,9 +69,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         @return True if operation was successful, or False if not.
         """
 
-        # TO BE IMPLEMENTED
-        pass
-
+        self.numColumns += 1
 
     def insertRow(self, rowIndex: int)->bool:
         """
@@ -193,6 +191,9 @@ def main():
     csr.buildSpreadsheet([Cell(0, 2, 3), Cell(1, 1, 4), Cell(2, 0, 6), Cell(2, 2, -2)])
     
     csr.debug()
+    print(csr.toList())
+    
+    csr.appendCol()
     print(csr.toList())
 
 if __name__ == '__main__':
