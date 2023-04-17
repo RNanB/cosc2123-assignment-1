@@ -180,16 +180,16 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         @return Number of rows the spreadsheet has.
         """
-        # TO BE IMPLEMENTED
-        return 0
+
+        return self.numRows
 
 
     def colNum(self)->int:
         """
         @return Number of column the spreadsheet has.
         """
-        # TO BE IMPLEMENTED
-        return 0
+
+        return self.numColumns
 
 
 
@@ -203,10 +203,24 @@ class CSRSpreadsheet(BaseSpreadsheet):
         @return List of cells (row, col) that contains the input value.
 	    """
 
-        # TO BE IMPLEMENTED
+        result: list[tuple[int, int]] = []
+
+        row = 0
+        sum = 0
+        for i, currVal in enumerate(self.valA):
+            column = self.colA[i]
+            
+            while sum == self.sumA[row + 1]:
+                row += 1
+            
+            if currVal == value:
+                result.append((row, column))
+
+            sum += currVal
+
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
-        return []
+        return result
 
 
 
@@ -254,9 +268,7 @@ def main():
     csr.debug()
     print(csr.toList())
     
-    csr.update(2, 2, 1)
-    # csr.debug()
-    print(csr.toList())
+    print(csr.find(-2))
 
 if __name__ == '__main__':
     main()
