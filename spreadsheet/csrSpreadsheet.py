@@ -60,6 +60,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
         self.numRows += 1
         self.sumA.append(self.sumA[-1])
+        
+        return True
 
 
     def appendCol(self):
@@ -70,6 +72,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
 
         self.numColumns += 1
+        
+        return True
 
     def insertRow(self, rowIndex: int)->bool:
         """
