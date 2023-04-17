@@ -41,7 +41,7 @@ class CSR:
         print(f'valA: {self.valA}')
         print(f'sumA: {self.sumA}')
     
-    def toTupleList(self) -> list[list]:
+    def toList(self) -> list[list]:
         # All zero list with the right size
         outputList = [[0 for i in range(self.numColumns)] for i in range(self.numRows)]
 
@@ -71,7 +71,7 @@ def main():
     csr = CSR(test)
     csr.appendRowBottom([1, 4, 0])
     csr.debug()
-    print(csr.toTupleList())
+    print(csr.toList())
 
 
 if __name__ == '__main__':
