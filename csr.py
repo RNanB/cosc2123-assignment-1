@@ -21,19 +21,23 @@ class CSR:
             self.sumA.append(currSum)
     
     
-    def appendRowBottom(self, inputList: list) -> None:
-        self.numRows += 1
+    # def appendRowBottom(self, inputList: list) -> None:
+    #     self.numRows += 1
 
-        sum = self.sumA[-1]
+    #     sum = self.sumA[-1]
 
-        for column, cell in enumerate(inputList):
-            if cell == 0:
-                continue
+    #     for column, cell in enumerate(inputList):
+    #         if cell == 0:
+    #             continue
             
-            self.valA.append(cell)
-            self.colA.append(column)
-            sum += cell
-        self.sumA.append(sum)
+    #         self.valA.append(cell)
+    #         self.colA.append(column)
+    #         sum += cell
+    #     self.sumA.append(sum)
+    
+    def appendRowBottom(self) -> None:
+        self.numRows += 1
+        self.sumA.append(self.sumA[-1])
     
     
     def debug(self) -> None:
@@ -69,7 +73,7 @@ def main():
     ]
     
     csr = CSR(test)
-    csr.appendRowBottom([1, 4, 0])
+    csr.appendRowBottom()
     csr.debug()
     print(csr.toList())
 
