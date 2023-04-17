@@ -87,12 +87,9 @@ class CSRSpreadsheet(BaseSpreadsheet):
         # Description is confusing, do I do it after or before index?
         # I'm going to do it after because that's what the document says
         
-        if rowIndex < -1:
+        if rowIndex < -1 or rowIndex >= self.numRows:
             return False
         
-        if rowIndex >= self.numRows:
-            return False
-
         self.numRows += 1
         self.sumA.insert(rowIndex + 2, self.sumA[rowIndex + 1])
 
@@ -107,8 +104,18 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
         return True if operation was successful, or False if not, e.g., colIndex is invalid.
         """
+        
+        # Inserts *after* index
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
+        if colIndex < -1 or colIndex >= self.numColumns:
+            return False
+        
+        for i , column in enumerate(self.colA):
+            if column > colIndex:
+                self.colA[i] += 1
+        
+        self.numColumns += 1
+
         return True
 
 
@@ -208,7 +215,7 @@ def main():
     csr.debug()
     print(csr.toList())
     
-    csr.insertRow(2)
+    csr.insertCol(1)
     print(csr.toList())
 
 if __name__ == '__main__':
