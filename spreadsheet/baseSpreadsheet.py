@@ -80,7 +80,7 @@ class BaseSpreadsheet:
         @return Number of rows the spreadsheet has.
         """
 
-        return 0;
+        return 0
 
 
     def colNum(self)->int:

@@ -23,7 +23,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         self.sumA: list = [0]
 
 
-    def buildSpreadsheet(self, lCells: list[Cell]):
+    def buildSpreadsheet(self, lCells: list[Cell]) -> None:
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
@@ -51,7 +51,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         pass
 
 
-    def appendRow(self):
+    def appendRow(self) -> bool:
         """
         Appends an empty row to the spreadsheet.
 
@@ -64,7 +64,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         return True
 
 
-    def appendCol(self):
+    def appendCol(self) -> bool:
         """
         Appends an empty column to the spreadsheet.
 
@@ -75,7 +75,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         
         return True
 
-    def insertRow(self, rowIndex: int)->bool:
+    def insertRow(self, rowIndex: int) -> bool:
         """
         Inserts an empty row into the spreadsheet.
 
@@ -83,8 +83,19 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not, e.g., rowIndex is invalid.
         """
+        
+        # Description is confusing, do I do it after or before index?
+        # I'm going to do it after because that's what the document says
+        
+        if rowIndex < -1:
+            return False
+        
+        if rowIndex >= self.numRows:
+            return False
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
+        self.numRows += 1
+        self.sumA.insert(rowIndex + 2, self.sumA[rowIndex + 1])
+
         return True
 
 
@@ -197,7 +208,7 @@ def main():
     csr.debug()
     print(csr.toList())
     
-    csr.appendCol()
+    csr.insertRow(2)
     print(csr.toList())
 
 if __name__ == '__main__':
