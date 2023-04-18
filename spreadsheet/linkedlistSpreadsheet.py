@@ -221,10 +221,12 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return True if cell can be updated.  False if cannot, e.g., row or column indices do not exist.
         """
 
-        # TO BE IMPLEMENTED
-        pass
+        if rowIndex < 0 or rowIndex >= self.numRows or colIndex < 0 or colIndex >= self.numRows:
+            return False
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
+        node = self._findByIndex(rowIndex, colIndex)
+        node.setValue(value)
+
         return True
 
 
@@ -312,7 +314,7 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.insertCol(1)
+    spreadsheet.update(0, 1, 5)
     spreadsheet.print()
 
 if __name__ == '__main__':
