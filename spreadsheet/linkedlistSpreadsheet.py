@@ -134,6 +134,8 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         self.tail.setNext(newTail)
         self.tail = newTail
         self.numRows += 1
+        
+        return True
 
 
     def appendCol(self):
@@ -257,7 +259,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return Number of rows the spreadsheet has.
         """
 
-        return self.colNum
+        return self.numColumns
 
 
     def colNum(self)->int:
@@ -265,7 +267,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return Number of column the spreadsheet has.
         """
 
-        return self.rowNum
+        return self.numRows
 
 
 
