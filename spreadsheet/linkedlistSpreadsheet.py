@@ -54,7 +54,10 @@ class ListNode:
         if isinstance(self.value, dict):
             self.value['head'].find(value, (coords[0], coords[1] + 1), outputList)
         else:
-            if self.value == value:
+            if value is None:
+                if self.value is not None:
+                    outputList.append(Cell(coords[0], coords[1], self.value))
+            elif self.value == value:
                 outputList.append((coords))
         
         if self.next is not None:
@@ -62,6 +65,7 @@ class ListNode:
             self.next.find(value, newCoords, outputList)
         
         return outputList
+    
 
 
 
@@ -274,7 +278,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return List of cells (row, col) that contains the input value.
 	    """
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
         return self.head.find(value)
 
 
@@ -284,11 +287,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return A list of cells that have values (i.e., all non None cells).
         """
 
-        # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return []
+        return self.head.find(None)
 
 
     def _makeNewRow(self, length):
@@ -329,8 +328,7 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.update(2, 2, 1)
-    print(spreadsheet.find(1))
+    print([str(x) for x in spreadsheet.entries()])
     spreadsheet.print()
 
 if __name__ == '__main__':
