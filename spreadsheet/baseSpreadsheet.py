@@ -9,7 +9,7 @@ from spreadsheet.cell import Cell
 # -------------------------------------------------
 
 class BaseSpreadsheet:
-    def buildSpreadsheet(self, lCells: list[Cell]):
+    def buildSpreadsheet(self, lCells: [Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
@@ -91,7 +91,7 @@ class BaseSpreadsheet:
         return 0
 
 
-    def find(self, value: float) -> list[(int, int)]:
+    def find(self, value: float) -> [(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -103,7 +103,7 @@ class BaseSpreadsheet:
         pass
 
 
-    def entries(self) -> list[Cell]:
+    def entries(self) -> [Cell]:
         """
         @return A list of cells that have values (i.e., all non None cells).
         """
