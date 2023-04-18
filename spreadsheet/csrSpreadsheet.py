@@ -165,7 +165,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
         
         
         # If it got to the end without finding something, that means we're appending it at the end
-        index = len(self.valA)
+        if index is None:
+            index = len(self.valA)
 
         
         if not replace:
@@ -302,7 +303,7 @@ def main():
     csr.appendCol()
     
     csr.debug()
-    csr.update(10, 10, 1.0)
+    csr.update(2, 5, 1.0)
     print(csr.toList())
     
 if __name__ == '__main__':
