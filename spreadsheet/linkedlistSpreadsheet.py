@@ -130,6 +130,8 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             curr.value['tail'] = newNode
             
             curr = curr.next
+        
+        self.numColumns += 1
             
         return True
 
