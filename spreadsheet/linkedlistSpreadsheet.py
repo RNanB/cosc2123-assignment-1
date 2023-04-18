@@ -1,5 +1,6 @@
 from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 from spreadsheet.cell import Cell
+from collections import namedtuple
 
 # Using "# type: ignore" because VSCode doesn't like python 3.6.8 style list type hints
 
@@ -30,8 +31,8 @@ class ListNode:
     #         if self.next is not None:
     #             self.next.walk(indent)
     def walk(self, indent=0):
-        if isinstance(self.value, ListNode):
-            self.value.walk(indent + 1)
+        if isinstance(self.value, dict):
+            self.value['head'].walk(indent + 1)
             print()
         else:
             if self.value is None:
@@ -92,7 +93,8 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                 currCell = newCell
 
             # Point the row node to the row head
-            currRow.setValue(newRowHead)
+            newRowTail = currCell
+            currRow.setValue({'head': newRowHead, 'tail': newRowTail})
         
         self.tail = currRow
         
@@ -109,13 +111,16 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         
         newTail = ListNode(self.tail)
         curr = ListNode(newTail)
-        newTail.setValue(curr)
+        newTailHead = curr
         
         for i in range(self.numColumns - 1):
             newNode = ListNode(curr)
             curr.setNext(newNode)
             curr = newNode
         
+        newTailTail = curr
+        
+        newTail.setValue({'head': newTailHead, 'tail': newTailTail})
         self.tail.setNext(newTail)
         self.tail = newTail
         self.numRows += 1
@@ -127,8 +132,18 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not.
         """
-        # TO BE IMPLEMENTED
-        pass
+        
+        curr = self.head
+
+        while curr is not None: # For each row
+            newNode = ListNode(curr.value['tail'])
+            
+            curr.value['tail'].setNext(newNode)
+            curr.value['tail'] = newNode
+            
+            curr = curr.next
+            
+        return True
 
 
     def insertRow(self, rowIndex: int)->bool:
@@ -241,7 +256,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         for i in range(row):
             curr = curr.next
         
-        curr = curr.value
+        curr = curr.value['head']
         for i in range(column):
             curr = curr.next
         
@@ -256,7 +271,7 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.appendRow()
+    spreadsheet.appendCol()
     spreadsheet.print()
 
 if __name__ == '__main__':
