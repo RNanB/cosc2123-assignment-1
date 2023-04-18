@@ -9,13 +9,16 @@ class ListNode:
     Define a node in the linked list
     '''
 
-    def __init__(self, prev, value=None):
+    def __init__(self, prev, value=None, next=None):
         self.prev: ListNode = prev
-        self.next: ListNode = None
+        self.next: ListNode = next
         self.value = value
     
     def setNext(self, next):
         self.next = next
+    
+    def setPrev(self, prev):
+        self.prev = prev
     
     def setValue(self, value):
         self.value = value
@@ -84,16 +87,9 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             currRow = newRow
 
             # Create all the cells in the row
-            currCell = ListNode(None)
-            newRowHead = currCell
-
-            for j in range(self.numColumns - 1):
-                newCell = ListNode(currCell)
-                currCell.setNext(newCell)
-                currCell = newCell
+            newRowHead, newRowTail = self._makeNewRow(self.numColumns)
 
             # Point the row node to the row head
-            newRowTail = currCell
             currRow.setValue({'head': newRowHead, 'tail': newRowTail})
         
         self.tail = currRow
@@ -110,15 +106,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         """
         
         newTail = ListNode(self.tail)
-        curr = ListNode(newTail)
-        newTailHead = curr
-        
-        for i in range(self.numColumns - 1):
-            newNode = ListNode(curr)
-            curr.setNext(newNode)
-            curr = newNode
-        
-        newTailTail = curr
+        newTailHead, newTailTail = self._makeNewRow(self.numColumns)
         
         newTail.setValue({'head': newTailHead, 'tail': newTailTail})
         self.tail.setNext(newTail)
@@ -154,11 +142,34 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not, e.g., rowIndex is invalid.
         """
+        # Inserts after index
+        
+        if rowIndex < -1 or rowIndex >= self.numRows:
+            return False
+        
+        if rowIndex == -1:
+            newRowHead, newRowTail = self._makeNewRow(self.numColumns)
+            
+            newRow = ListNode(None, {'head': newRowHead, 'tail': newRowTail}, self.head)
+            self.head.setPrev(newRow)
+            self.head = newRow
+        else:
+            # Make new row
+            newRowHead, newRowTail = self._makeNewRow(self.numColumns)
 
-        # TO BE IMPLEMENTED
-        pass
+            # Find location to insert
+            curr = self.head
+            for i in range(rowIndex):
+                curr = curr.next
+           
+            # Insert row
+            newRow = ListNode(curr, {'head': newRowHead, 'tail': newRowTail}, curr.next)
+            if curr.next is not None:
+                curr.next.setPrev(newRow)
+            curr.setNext(newRow)
+        
+        self.numRows += 1
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
         return True
 
 
@@ -248,6 +259,21 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         return []
 
 
+    def _makeNewRow(self, length):
+        curr = ListNode(None)
+        head = curr
+        
+        for i in range(length - 1):
+            newNode = ListNode(curr)
+            curr.setNext(newNode)
+            curr = newNode
+        
+        tail = curr
+        
+        return head, tail
+
+
+
     def print(self) -> None:
         self.head.walk()
     
@@ -271,7 +297,7 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.appendCol()
+    spreadsheet.insertRow(2)
     spreadsheet.print()
 
 if __name__ == '__main__':
