@@ -1,15 +1,36 @@
 from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 from spreadsheet.cell import Cell
 
+# Using "# type: ignore" because VSCode doesn't like python 3.6.8 style list type hints
 
-# class ListNode:
-#     '''
-#     Define a node in the linked list
-#     '''
-#
-#     def __init__(self, word_frequency: WordFrequency):
-#         self.word_frequency = word_frequency
-#         self.next = None
+class ListNode:
+    '''
+    Define a node in the linked list
+    '''
+
+    def __init__(self, prev, value=None):
+        self.prev: ListNode = prev
+        self.next: ListNode = None
+        self.value = value
+    
+    def setNext(self, next):
+        self.next = next
+    
+    def setValue(self, value):
+        self.value = value
+    
+    def findNode(self, row, column):
+        pass
+
+    def walk(self, indent=0):
+            if isinstance(self.value, ListNode):
+                print("Value is node")
+                self.value.walk(indent + 1)
+            else:
+                print(f'{"   "*indent}{self.value}')
+
+            if self.next is not None:
+                self.next.walk(indent)
 
 # ------------------------------------------------------------------------
 # This class  is required TO BE IMPLEMENTED
@@ -22,15 +43,45 @@ from spreadsheet.cell import Cell
 class LinkedListSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        # TO BE IMPLEMENTED
-        pass
+        self.head: ListNode = None
 
 
-    def buildSpreadsheet(self, lCells: [Cell]):
+    def buildSpreadsheet(self, lCells: [Cell]): # type: ignore
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
+        
+        currRow: ListNode = None
+        head = None
+        
+        numRows = max((cell.row for cell in lCells))
+        numColumns = max((cell.col for cell in lCells))
+        
+        for i in range(numRows):
+            # Create a new row node
+            newRow = ListNode(currRow)
+            if head is None:
+                head = newRow
+            else:
+                currRow.setNext(newRow)
+            currRow = newRow
+
+            # Create all the cells in the row
+            currCell = ListNode(None)
+            newRowHead = currCell
+
+            for j in range(numColumns - 1):
+                newCell = ListNode(currCell)
+                currCell.setNext(newCell)
+                currCell = newCell
+
+            # Point the row node to the row head
+            currRow.setValue(newRowHead)
+        
+        tail = currRow
+        
+        
 
         # TO BE IMPLEMENTED
         pass
@@ -128,7 +179,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
 
 
-    def find(self, value: float) -> [(int, int)]:
+    def find(self, value: float) -> [(int, int)]: # type: ignore
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -145,7 +196,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
 
 
-    def entries(self) -> [Cell]:
+    def entries(self) -> [Cell]: # type: ignore
         """
         @return A list of cells that have values (i.e., all non None cells).
         """
@@ -155,3 +206,11 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         # TO BE IMPLEMENTED
         return []
+
+
+def main():
+    spreadsheet = LinkedListSpreadsheet()
+    spreadsheet.buildSpreadsheet([Cell(0, 0, 1), Cell(1, 1, 1), Cell(2, 2, 1)])
+
+if __name__ == '__main__':
+    main()
