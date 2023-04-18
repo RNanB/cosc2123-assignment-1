@@ -181,11 +181,32 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @param colIndex Index of the existing column that will be before the newly inserted row.  If inserting as first column, specify colIndex to be -1.
         """
+        
+        if colIndex < -1 or colIndex >= self.numColumns:
+            return False
 
-        # TO BE IMPLEMENTED
-        pass
 
-        # REPLACE WITH APPROPRIATE RETURN VALUE
+        curr = self.head
+        while curr is not None: # For all rows
+            if colIndex == -1:
+                newNode = ListNode(None, next=curr.value['head'])
+                curr.value['head'].setPrev(newNode)
+                curr.value['head'] = newNode
+            else:
+                # Find where to insert
+                currNode = curr.value['head']
+                for i in range(colIndex):
+                    currNode = currNode.next
+                
+                newNode = ListNode(currNode, next=currNode.next)
+                if currNode.next is not None:
+                    currNode.next.setPrev(newNode)
+                currNode.setNext(newNode)
+
+            curr = curr.next
+        
+        self.numColumns += 1
+
         return True
 
 
@@ -299,7 +320,7 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.insertRow(2)
+    spreadsheet.insertCol(1)
     spreadsheet.print()
 
 if __name__ == '__main__':
