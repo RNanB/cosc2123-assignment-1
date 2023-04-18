@@ -131,7 +131,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         @return True if cell can be updated.  False if cannot, e.g., row or column indices do not exist.
         """
         
-        if rowIndex >= self.numRows or colIndex >= self.numColumns:
+        if rowIndex >= self.numRows or colIndex >= self.numColumns or rowIndex < 0 or colIndex < 0:
             return False
 
         # First find index of valA to insert it in
