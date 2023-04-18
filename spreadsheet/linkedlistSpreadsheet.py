@@ -18,19 +18,30 @@ class ListNode:
     
     def setValue(self, value):
         self.value = value
+               
     
-    def findNode(self, row, column):
-        pass
+    # def walk(self, indent=0):
+    #         if isinstance(self.value, ListNode):
+    #             print("Value is node")
+    #             self.value.walk(indent + 1)
+    #         else:
+    #             print(f'{"   "*indent}{self.value}')
 
+    #         if self.next is not None:
+    #             self.next.walk(indent)
     def walk(self, indent=0):
-            if isinstance(self.value, ListNode):
-                print("Value is node")
-                self.value.walk(indent + 1)
+        if isinstance(self.value, ListNode):
+            self.value.walk(indent + 1)
+            print()
+        else:
+            if self.value is None:
+                print('_', end = ' ')
             else:
-                print(f'{"   "*indent}{self.value}')
+                print(self.value, end=' ')
+    
+        if self.next is not None:
+            self.next.walk(indent)
 
-            if self.next is not None:
-                self.next.walk(indent)
 
 # ------------------------------------------------------------------------
 # This class  is required TO BE IMPLEMENTED
@@ -44,6 +55,10 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
         self.head: ListNode = None
+        self.tail: ListNode = None
+
+        self.numRows = 0
+        self.numColumns = 0
 
 
     def buildSpreadsheet(self, lCells: [Cell]): # type: ignore
@@ -53,16 +68,16 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         """
         
         currRow: ListNode = None
-        head = None
+        self.head = None
         
-        numRows = max((cell.row for cell in lCells))
-        numColumns = max((cell.col for cell in lCells))
+        self.numRows = max((cell.row for cell in lCells)) + 1
+        self.numColumns = max((cell.col for cell in lCells)) + 1
         
-        for i in range(numRows):
+        for i in range(self.numRows):
             # Create a new row node
             newRow = ListNode(currRow)
-            if head is None:
-                head = newRow
+            if self.head is None:
+                self.head = newRow
             else:
                 currRow.setNext(newRow)
             currRow = newRow
@@ -71,7 +86,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             currCell = ListNode(None)
             newRowHead = currCell
 
-            for j in range(numColumns - 1):
+            for j in range(self.numColumns - 1):
                 newCell = ListNode(currCell)
                 currCell.setNext(newCell)
                 currCell = newCell
@@ -79,21 +94,31 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             # Point the row node to the row head
             currRow.setValue(newRowHead)
         
-        tail = currRow
-        
+        self.tail = currRow
         
 
-        # TO BE IMPLEMENTED
-        pass
-
+        for cell in lCells:
+            node = self._findByIndex(cell.row, cell.col)
+            node.setValue(cell.val)
+        
 
     def appendRow(self):
         """
         Appends an empty row to the spreadsheet.
         """
-
-        # TO BE IMPLEMENTED
-        pass
+        
+        newTail = ListNode(self.tail)
+        curr = ListNode(newTail)
+        newTail.setValue(curr)
+        
+        for i in range(self.numColumns - 1):
+            newNode = ListNode(curr)
+            curr.setNext(newNode)
+            curr = newNode
+        
+        self.tail.setNext(newTail)
+        self.tail = newTail
+        self.numRows += 1
 
 
     def appendCol(self):
@@ -208,9 +233,31 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         return []
 
 
+    def print(self) -> None:
+        self.head.walk()
+    
+    def _findByIndex(self, row: int, column: int) -> ListNode:
+        curr = self.head
+        for i in range(row):
+            curr = curr.next
+        
+        curr = curr.value
+        for i in range(column):
+            curr = curr.next
+        
+        return curr
+
+        
+
+
 def main():
     spreadsheet = LinkedListSpreadsheet()
-    spreadsheet.buildSpreadsheet([Cell(0, 0, 1), Cell(1, 1, 1), Cell(2, 2, 1)])
+    spreadsheet.buildSpreadsheet([Cell(0, 0, 1), Cell(1, 1, 2), Cell(2, 2, 3)])
+    spreadsheet.print()
+    
+    print()
+    spreadsheet.appendRow()
+    spreadsheet.print()
 
 if __name__ == '__main__':
     main()
