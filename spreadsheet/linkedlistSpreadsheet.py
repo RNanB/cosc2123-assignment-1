@@ -233,11 +233,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return Number of rows the spreadsheet has.
         """
 
-        # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return 0
+        return self.colNum
 
 
     def colNum(self)->int:
@@ -245,11 +241,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return Number of column the spreadsheet has.
         """
 
-        # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return 0
+        return self.rowNum
 
 
 
