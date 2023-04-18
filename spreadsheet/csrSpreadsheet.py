@@ -32,18 +32,22 @@ class CSRSpreadsheet(BaseSpreadsheet):
         self.numRows = max((cell.row for cell in lCells)) + 1
         self.numColumns = max((cell.col for cell in lCells)) + 1
         
+        # Sort in order of what order they'll be in valA
+        lCells.sort(key = lambda x: x.row * self.numColumns + self.numColumns)
+        
         currSum = 0
 
         for cell in lCells:
             self.valA.append(cell.val)
             self.colA.append(cell.col)
             
-            # Update sumA
-            if len(self.sumA) - 1 <= cell.row:
-                self.sumA.append(self.sumA[-1] + cell.val)
-            else:
-                for i in range(cell.col + 1, len(self.sumA)):
-                    self.sumA[i] += cell.val
+            # First create sumA entries
+            for i in range(len(self.sumA) - 1, cell.row + 1):
+                self.sumA.append(self.sumA[-1])
+
+            # Then add this cell to all applicable sumA entries
+            for i in range(cell.row + 1, len(self.sumA)):
+                self.sumA[i] += cell.val
 
 
 
@@ -158,6 +162,11 @@ class CSRSpreadsheet(BaseSpreadsheet):
                 break
             
             sum += currVal
+        
+        
+        # If it got to the end without finding something, that means we're appending it at the end
+        index = len(self.valA)
+
         
         if not replace:
             self.valA.insert(index, value)
@@ -280,12 +289,21 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
 def main():
     csr = CSRSpreadsheet()
-    csr.buildSpreadsheet([Cell(0, 2, 3), Cell(1, 1, 4), Cell(2, 0, 6), Cell(2, 2, -2)])
+    csr.buildSpreadsheet([
+        Cell(9, 9, 2.0),
+        Cell(2, 5, 7),
+        Cell(3, 1, 6),
+        Cell(8, 5, -6.7)
+    ])
+
+    csr.debug()
+    
+    csr.appendRow()
+    csr.appendCol()
     
     csr.debug()
+    csr.update(10, 10, 1.0)
     print(csr.toList())
     
-    print([str(x) for x in csr.entries()])
-
 if __name__ == '__main__':
     main()
