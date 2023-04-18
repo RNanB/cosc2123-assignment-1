@@ -147,7 +147,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         for i, currVal in enumerate(self.valA):
             column = self.colA[i]
             
-            while sum == self.sumA[row + 1]:
+            while round(sum, 4) == round(self.sumA[row + 1], 4):
                 row += 1
             
             # Got to the coordinates, and there is no value there
@@ -220,7 +220,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         for i, currVal in enumerate(self.valA):
             column = self.colA[i]
             
-            while sum == self.sumA[row + 1]:
+            while round(sum, 4) == round(self.sumA[row + 1], 4):
                 row += 1
             
             if currVal == value:
@@ -250,7 +250,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
             # If the sum matches, move on to the next row
             # What about when the row reaches its sum before the end, because of negatives?
             # Apparently we don't need to cover that case, according to Jeffrey Chan
-            while sum == self.sumA[row + 1]:
+            while round(sum, 4) == round(self.sumA[row + 1], 4):
                 row += 1
             
             result.append(Cell(row, column, currVal))
@@ -279,7 +279,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
             # If the sum matches, move on to the next row
             # What about when the row reaches its sum before the end, because of negatives?
             # Apparently we don't need to cover that case, according to Jeffrey Chan
-            while sum == self.sumA[row + 1]:
+            while round(sum, 4) == round(self.sumA[row + 1], 4):
                 row += 1
             
             outputList[row][column] = currVal
@@ -303,8 +303,11 @@ def main():
     csr.appendCol()
     
     csr.debug()
-    csr.update(2, 5, 1.0)
+    csr.update(10, 10, 1.0)
     print(csr.toList())
+    csr.update(2, 5, -1)
+    print(csr.toList())
+    print([str(x) for x in csr.entries()])
     
 if __name__ == '__main__':
     main()
