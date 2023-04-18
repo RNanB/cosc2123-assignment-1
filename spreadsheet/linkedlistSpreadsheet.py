@@ -45,6 +45,24 @@ class ListNode:
     
         if self.next is not None:
             self.next.walk(indent)
+    
+
+    def find(self, value, coords = (0, -1), outputList = None) -> [(int, int)]: # type: ignore
+        if outputList is None:
+            outputList = []
+
+        if isinstance(self.value, dict):
+            self.value['head'].find(value, (coords[0], coords[1] + 1), outputList)
+        else:
+            if self.value == value:
+                outputList.append((coords))
+        
+        if self.next is not None:
+            newCoords = (coords[0] + 1, coords[1]) if isinstance(self.value, dict) else (coords[0], coords[1] + 1)
+            self.next.find(value, newCoords, outputList)
+        
+        return outputList
+
 
 
 # ------------------------------------------------------------------------
@@ -256,11 +274,8 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         @return List of cells (row, col) that contains the input value.
 	    """
 
-        # TO BE IMPLEMENTED
-        pass
-
         # REPLACE WITH APPROPRIATE RETURN VALUE
-        return []
+        return self.head.find(value)
 
 
 
@@ -314,7 +329,8 @@ def main():
     spreadsheet.print()
     
     print()
-    spreadsheet.update(0, 1, 5)
+    spreadsheet.update(2, 2, 1)
+    print(spreadsheet.find(1))
     spreadsheet.print()
 
 if __name__ == '__main__':
