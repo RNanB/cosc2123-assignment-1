@@ -1,0 +1,19 @@
+appendRow() executed in 0.03142 ms
+appendCol() executed in 0.00224 ms
+find(6.0) executed in 0.01429 ms
+find(-6.0) executed in 0.01139 ms
+find(-6.7) executed in 0.01120 ms
+rowNum() executed in 0.00094 ms
+colNum() executed in 0.00083 ms
+update(2, 5, -1.0) executed in 0.00118 ms
+update(10, 10, 1.0) executed in 0.00042 ms
+update(11, 11, 2.5) executed in 0.00011 ms
+entries() executed in 0.01301 ms
+insertRow(1) executed in 0.00333 ms
+insertCol(4) executed in 0.00425 ms
+insertRow(-2) executed in 0.00011 ms
+rowNum() executed in 0.00008 ms
+colNum() executed in 0.00008 ms
+entries() executed in 0.01385 ms
+update(2, 5, -2.0) executed in 0.00033 ms
+entries() executed in 0.01311 ms
